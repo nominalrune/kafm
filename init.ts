@@ -1,15 +1,16 @@
 import fs from "fs/promises"
-/** generates timestamp `hh:mm:ss`*/
-const getTime = () => `${new Date().toLocaleTimeString("ja-JP", { timeZone: "japan" })}`;
+const locale:[string,object] = ["ja-JP", { timeZone: "japan" }];
 
-/** `yyyy_MM_dd.log` : file name is after the date he got executed. If you get him do this multiple times a day, you'd just get a single sequentially logged file per day. &nbsp;&nbsp; :> */
-const logFile = `${(new Date()).toLocaleDateString("ja-JP", { timeZone: "japan" }).replace(/\//g, "_")}.log`;
+/** `yyyy_MM_dd.log` : file name is after the date when this shell got executed. If you get him do the job multiple times a day, you'd just get a single sequentially logged file per day. &nbsp;&nbsp; :> */
+const logFile = `${(new Date()).toLocaleDateString(...locale).replace(/\//g, "_")}.log`;
+/** generates timestamp `hh:mm:ss`*/
+const getTime = () => `${new Date().toLocaleTimeString(...locale)}`;
 
 const addLog = (message: string) => (
 	fs.appendFile(logFile,
 		`${getTime()}\t${message}\n`
-	)
-)
+		)
+		)
 const toJSONFile = (name: string, json = "") => (
 	json !== ""
 		? fs.writeFile(`${name}.json`, json)
